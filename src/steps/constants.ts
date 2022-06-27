@@ -7,74 +7,129 @@ import {
 export const Steps = {
   ACCOUNT: 'fetch-account',
   USERS: 'fetch-users',
-  GROUPS: 'fetch-groups',
-  GROUP_USER_RELATIONSHIPS: 'build-user-group-relationships',
+  SECRET_ENGINES: 'fetch-secret-engines',
+  AUTH_BACKENDS: 'fetch-auth-backends',
+  KV_1_SECRETS: 'fetch-kv-1-secrets',
+  KV_2_SECRETS: 'fetch-kv-2-secrets',
+  CUBBYHOLE_SECRETS: 'fetch-cubbyhole-secrets',
 };
 
 export const Entities: Record<
-  'ACCOUNT' | 'GROUP' | 'USER',
+  | 'ACCOUNT'
+  | 'USER'
+  | 'AUTH_BACKEND'
+  | 'CUBBYHOLE_ENGINE'
+  | 'KV_1_ENGINE'
+  | 'KV_2_ENGINE'
+  | 'CUBBYHOLE_SECRET'
+  | 'KV_1_SECRET'
+  | 'KV_2_SECRET',
   StepEntityMetadata
 > = {
   ACCOUNT: {
     resourceName: 'Account',
-    _type: 'acme_account',
+    _type: 'hashicorp_vault_account',
     _class: ['Account'],
-    schema: {
-      properties: {
-        mfaEnabled: { type: 'boolean' },
-        manager: { type: 'string' },
-      },
-      required: ['mfaEnabled', 'manager'],
-    },
   },
-  GROUP: {
-    resourceName: 'UserGroup',
-    _type: 'acme_group',
-    _class: ['UserGroup'],
-    schema: {
-      properties: {
-        email: { type: 'string' },
-        logoLink: { type: 'string' },
-      },
-      required: ['email', 'logoLink'],
-    },
+  AUTH_BACKEND: {
+    resourceName: 'Authentication Backend',
+    _type: 'hashicorp_vault_auth_backend',
+    _class: ['Service'],
   },
   USER: {
     resourceName: 'User',
-    _type: 'acme_user',
+    _type: 'hashicorp_vault_user',
     _class: ['User'],
-    schema: {
-      properties: {
-        username: { type: 'string' },
-        email: { type: 'string' },
-        active: { type: 'boolean' },
-        firstName: { type: 'string' },
-      },
-      required: ['username', 'email', 'active', 'firstName'],
-    },
+  },
+  CUBBYHOLE_ENGINE: {
+    resourceName: 'Cubbyhole Engine',
+    _type: 'hashicorp_vault_cubbyhole_engine',
+    _class: ['Service'],
+  },
+  CUBBYHOLE_SECRET: {
+    resourceName: 'Cubbyhole Secret',
+    _type: 'hashicorp_vault_cubbyhole_secret',
+    _class: ['Secret'],
+  },
+  KV_1_ENGINE: {
+    resourceName: 'KV1 Engine',
+    _type: 'hashicorp_vault_kv1_engine',
+    _class: ['Service'],
+  },
+  KV_1_SECRET: {
+    resourceName: 'KV1 Secret',
+    _type: 'hashicorp_vault_kv1_secret',
+    _class: ['Secret'],
+  },
+  KV_2_ENGINE: {
+    resourceName: 'KV2 Engine',
+    _type: 'hashicorp_vault_kv2_engine',
+    _class: ['Service'],
+  },
+  KV_2_SECRET: {
+    resourceName: 'KV2 Secret',
+    _type: 'hashicorp_vault_kv2_secret',
+    _class: ['Secret'],
   },
 };
 
 export const Relationships: Record<
-  'ACCOUNT_HAS_USER' | 'ACCOUNT_HAS_GROUP' | 'GROUP_HAS_USER',
+  | 'ACCOUNT_HAS_AUTH_BACKEND'
+  | 'AUTH_BACKEND_HAS_USER'
+  | 'ACCOUNT_HAS_CUBBYHOLE_ENGINE'
+  | 'ACCOUNT_HAS_KV_1_ENGINE'
+  | 'ACCOUNT_HAS_KV_2_ENGINE'
+  | 'KV_1_ENGINE_HAS_KV_1_SECRET'
+  | 'KV_2_ENGINE_HAS_KV_2_SECRET'
+  | 'CUBBYHOLE_ENGINE_HAS_CUBBYHOLE_SECRET',
   StepRelationshipMetadata
 > = {
-  ACCOUNT_HAS_USER: {
-    _type: 'acme_account_has_user',
-    sourceType: Entities.ACCOUNT._type,
+  AUTH_BACKEND_HAS_USER: {
+    _type: 'hashicorp_vault_auth_backend_has_user',
+    sourceType: Entities.AUTH_BACKEND._type,
     _class: RelationshipClass.HAS,
     targetType: Entities.USER._type,
   },
-  ACCOUNT_HAS_GROUP: {
-    _type: 'acme_account_has_group',
+  ACCOUNT_HAS_AUTH_BACKEND: {
+    _type: 'hashicorp_vault_account_has_auth_backend',
     sourceType: Entities.ACCOUNT._type,
     _class: RelationshipClass.HAS,
-    targetType: Entities.GROUP._type,
+    targetType: Entities.AUTH_BACKEND._type,
   },
-  GROUP_HAS_USER: {
-    _type: 'acme_group_has_user',
-    sourceType: Entities.GROUP._type,
+  ACCOUNT_HAS_CUBBYHOLE_ENGINE: {
+    _type: 'hashicorp_vault_account_has_cubbyhole_engine',
+    sourceType: Entities.ACCOUNT._type,
     _class: RelationshipClass.HAS,
-    targetType: Entities.USER._type,
+    targetType: Entities.CUBBYHOLE_ENGINE._type,
+  },
+  ACCOUNT_HAS_KV_1_ENGINE: {
+    _type: 'hashicorp_vault_account_has_kv1_engine',
+    sourceType: Entities.ACCOUNT._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.KV_1_ENGINE._type,
+  },
+  ACCOUNT_HAS_KV_2_ENGINE: {
+    _type: 'hashicorp_vault_account_has_kv2_engine',
+    sourceType: Entities.ACCOUNT._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.KV_2_ENGINE._type,
+  },
+  KV_1_ENGINE_HAS_KV_1_SECRET: {
+    _type: 'hashicorp_vault_kv1_engine_has_secret',
+    sourceType: Entities.KV_1_ENGINE._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.KV_1_SECRET._type,
+  },
+  KV_2_ENGINE_HAS_KV_2_SECRET: {
+    _type: 'hashicorp_vault_kv2_engine_has_secret',
+    sourceType: Entities.KV_2_ENGINE._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.KV_2_SECRET._type,
+  },
+  CUBBYHOLE_ENGINE_HAS_CUBBYHOLE_SECRET: {
+    _type: 'hashicorp_vault_cubbyhole_engine_has_secret',
+    sourceType: Entities.CUBBYHOLE_ENGINE._type,
+    _class: RelationshipClass.HAS,
+    targetType: Entities.CUBBYHOLE_SECRET._type,
   },
 };

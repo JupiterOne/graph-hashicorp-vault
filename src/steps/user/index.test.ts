@@ -1,7 +1,10 @@
 import { executeStepWithDependencies } from '@jupiterone/integration-sdk-testing';
+
 import { buildStepTestConfigForStep } from '../../../test/config';
 import { Recording, setupProjectRecording } from '../../../test/recording';
 import { Steps } from '../constants';
+
+jest.setTimeout(500000000);
 
 // See test/README.md for details
 let recording: Recording;
@@ -16,28 +19,6 @@ test('fetch-users', async () => {
   });
 
   const stepConfig = buildStepTestConfigForStep(Steps.USERS);
-  const stepResult = await executeStepWithDependencies(stepConfig);
-  expect(stepResult).toMatchStepMetadata(stepConfig);
-});
-
-test('fetch-groups', async () => {
-  recording = setupProjectRecording({
-    directory: __dirname,
-    name: 'fetch-groups',
-  });
-
-  const stepConfig = buildStepTestConfigForStep(Steps.GROUPS);
-  const stepResult = await executeStepWithDependencies(stepConfig);
-  expect(stepResult).toMatchStepMetadata(stepConfig);
-});
-
-test('build-user-group-relationships', async () => {
-  recording = setupProjectRecording({
-    directory: __dirname,
-    name: 'build-user-group-relationships',
-  });
-
-  const stepConfig = buildStepTestConfigForStep(Steps.GROUP_USER_RELATIONSHIPS);
   const stepResult = await executeStepWithDependencies(stepConfig);
   expect(stepResult).toMatchStepMetadata(stepConfig);
 });

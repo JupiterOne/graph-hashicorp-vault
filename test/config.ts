@@ -10,12 +10,20 @@ if (process.env.LOAD_ENV) {
     path: path.join(__dirname, '../.env'),
   });
 }
-const DEFAULT_CLIENT_ID = 'dummy-acme-client-id';
-const DEFAULT_CLIENT_SECRET = 'dummy-acme-client-secret';
+
+const DEFAULT_TOKEN =
+  'hvs.12345BpXxKlk5cMizBmKXlxFFjCxBzQoTMRKd3nocSpA-WwnGh4KHGh2cy5hQm9oTUd0bEdnbnd6VXppQUE2NE12345';
+const DEFAULT_HOSTNAME = 'http://dummy.host.name/';
+const DEFAULT_USERNAME = 'foo_bar';
+const DEFAULT_PASSWORD = 'foobar123!';
 
 export const integrationConfig: IntegrationConfig = {
-  clientId: process.env.CLIENT_ID || DEFAULT_CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET || DEFAULT_CLIENT_SECRET,
+  hostname: process.env.HOSTNAME || DEFAULT_HOSTNAME,
+  token: process.env.TOKEN || DEFAULT_TOKEN,
+  namespace: process.env.NAMESPACE || '',
+  username: process.env.USERNAME || DEFAULT_USERNAME,
+  password: process.env.PASSWORD || DEFAULT_PASSWORD,
+  isCloud: process.env.IS_CLOUD === 'true' || false,
 };
 
 export function buildStepTestConfigForStep(stepId: string): StepTestConfig {
