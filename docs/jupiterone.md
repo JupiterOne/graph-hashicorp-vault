@@ -147,32 +147,25 @@ https://github.com/JupiterOne/sdk/blob/main/docs/integrations/development.md
 
 The following entities are created:
 
-| Resources              | Entity `_type`                     | Entity `_class` |
-| ---------------------- | ---------------------------------- | --------------- |
-| Account                | `hashicorp_vault_account`          | `Account`       |
-| Authentication Backend | `hashicorp_vault_auth_backend`     | `Service`       |
-| Cubbyhole Engine       | `hashicorp_vault_cubbyhole_engine` | `Service`       |
-| Cubbyhole Secret       | `hashicorp_vault_cubbyhole_secret` | `Secret`        |
-| KV1 Engine             | `hashicorp_vault_kv1_engine`       | `Service`       |
-| KV1 Secret             | `hashicorp_vault_kv1_secret`       | `Secret`        |
-| KV2 Engine             | `hashicorp_vault_kv2_engine`       | `Service`       |
-| KV2 Secret             | `hashicorp_vault_kv2_secret`       | `Secret`        |
-| User                   | `hashicorp_vault_user`             | `User`          |
+| Resources              | Entity `_type`                 | Entity `_class` |
+| ---------------------- | ------------------------------ | --------------- |
+| Account                | `hashicorp_vault_account`      | `Account`       |
+| Authentication Backend | `hashicorp_vault_auth_backend` | `Service`       |
+| Secret                 | `hashicorp_vault_secret`       | `Secret`        |
+| Secret Engine          | `hashicorp_vault_engine`       | `Service`       |
+| User                   | `hashicorp_vault_user`         | `User`          |
 
 ### Relationships
 
 The following relationships are created:
 
-| Source Entity `_type`              | Relationship `_class` | Target Entity `_type`              |
-| ---------------------------------- | --------------------- | ---------------------------------- |
-| `hashicorp_vault_account`          | **HAS**               | `hashicorp_vault_auth_backend`     |
-| `hashicorp_vault_account`          | **HAS**               | `hashicorp_vault_cubbyhole_engine` |
-| `hashicorp_vault_account`          | **HAS**               | `hashicorp_vault_kv1_engine`       |
-| `hashicorp_vault_account`          | **HAS**               | `hashicorp_vault_kv2_engine`       |
-| `hashicorp_vault_auth_backend`     | **HAS**               | `hashicorp_vault_user`             |
-| `hashicorp_vault_cubbyhole_engine` | **HAS**               | `hashicorp_vault_cubbyhole_secret` |
-| `hashicorp_vault_kv1_engine`       | **HAS**               | `hashicorp_vault_kv1_secret`       |
-| `hashicorp_vault_kv2_engine`       | **HAS**               | `hashicorp_vault_kv2_secret`       |
+| Source Entity `_type`          | Relationship `_class` | Target Entity `_type`          |
+| ------------------------------ | --------------------- | ------------------------------ |
+| `hashicorp_vault_account`      | **HAS**               | `hashicorp_vault_auth_backend` |
+| `hashicorp_vault_account`      | **HAS**               | `hashicorp_vault_engine`       |
+| `hashicorp_vault_account`      | **HAS**               | `hashicorp_vault_user`         |
+| `hashicorp_vault_auth_backend` | **HAS**               | `hashicorp_vault_user`         |
+| `hashicorp_vault_engine`       | **HAS**               | `hashicorp_vault_secret`       |
 
 <!--
 ********************************************************************************

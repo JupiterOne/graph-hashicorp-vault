@@ -5,7 +5,7 @@ import { IntegrationConfig } from '../../../../src/config';
 export const authBackendSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: https://localhost/api/v1/sys/internal/ui/mounts
      * PATTERN: Fetch Entities
      */
     id: 'fetch-auth-backends',

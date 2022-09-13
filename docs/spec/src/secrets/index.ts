@@ -2,27 +2,27 @@ import { RelationshipClass, StepSpec } from '@jupiterone/integration-sdk-core';
 
 import { IntegrationConfig } from '../../../../src/config';
 
-export const kv2Spec: StepSpec<IntegrationConfig>[] = [
+export const secretSpec: StepSpec<IntegrationConfig>[] = [
   {
     /**
-     * ENDPOINT: https://localhost/api/v1/users
+     * ENDPOINT: https://localhost/api/v1/{engineName}
      * PATTERN: Fetch Entities
      */
-    id: 'fetch-kv-2-secrets',
-    name: 'Fetch KV v2 Secrets',
+    id: 'fetch-secrets',
+    name: 'Fetch Secrets',
     entities: [
       {
-        resourceName: 'KV2 Secret',
-        _type: 'hashicorp_vault_kv2_secret',
+        resourceName: 'Secret',
+        _type: 'hashicorp_vault_secret',
         _class: ['Secret'],
       },
     ],
     relationships: [
       {
-        _type: 'hashicorp_vault_kv2_engine_has_secret',
-        sourceType: 'hashicorp_vault_kv2_engine',
+        _type: 'hashicorp_vault_engine_has_secret',
+        sourceType: 'hashicorp_vault_engine',
         _class: RelationshipClass.HAS,
-        targetType: 'hashicorp_vault_kv2_secret',
+        targetType: 'hashicorp_vault_secret',
       },
     ],
     dependsOn: ['fetch-secret-engines'],

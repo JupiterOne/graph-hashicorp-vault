@@ -4,9 +4,7 @@ import { IntegrationConfig } from '../../../src/config';
 import { userSpec } from './user';
 import { accountSpec } from './account';
 import { secretEngineSpec } from './secret-engine';
-import { kv1Spec } from './kv1';
-import { kv2Spec } from './kv2';
-import { cubbyholeSpec } from './cubbyhole';
+import { secretSpec } from './secrets';
 import { authBackendSpec } from './auth-backend';
 
 export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
@@ -15,8 +13,6 @@ export const invocationConfig: IntegrationSpecConfig<IntegrationConfig> = {
     ...authBackendSpec,
     ...userSpec,
     ...secretEngineSpec,
-    ...kv1Spec,
-    ...kv2Spec,
-    ...cubbyholeSpec,
+    ...secretSpec,
   ],
 };

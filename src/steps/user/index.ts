@@ -1,5 +1,6 @@
 import {
   createDirectRelationship,
+  Entity,
   getRawData,
   IntegrationStep,
   IntegrationStepExecutionContext,
@@ -9,6 +10,7 @@ import {
 import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
 import { HashiCorpVaultAuth } from '../../types';
+import { ACCOUNT_ENTITY_KEY } from '../account';
 import { Entities, Steps, Relationships } from '../constants';
 import { createUserEntity } from './converter';
 
@@ -18,6 +20,7 @@ export async function fetchUsers({
   jobState,
 }: IntegrationStepExecutionContext<IntegrationConfig>) {
   const apiClient = createAPIClient(instance.config);
+  const accountEntity = (await jobState.getData(ACCOUNT_ENTITY_KEY)) as Entity;
 
   await jobState.iterateEntities(
     {
@@ -47,13 +50,18 @@ export async function fetchUsers({
           createUserEntity(username, authBackend.name!, userDetails),
         );
 
-        await jobState.addRelationship(
+        await jobState.addRelationships([
           createDirectRelationship({
             _class: RelationshipClass.HAS,
             from: authBackendEntity,
             to: userEntity,
           }),
-        );
+          createDirectRelationship({
+            _class: RelationshipClass.HAS,
+            from: accountEntity,
+            to: userEntity,
+          }),
+        ]);
       });
     },
   );
@@ -64,7 +72,10 @@ export const userSteps: IntegrationStep<IntegrationConfig>[] = [
     id: Steps.USERS,
     name: 'Fetch Users',
     entities: [Entities.USER],
-    relationships: [Relationships.AUTH_BACKEND_HAS_USER],
+    relationships: [
+      Relationships.AUTH_BACKEND_HAS_USER,
+      Relationships.ACCOUNT_HAS_USER,
+    ],
     dependsOn: [Steps.AUTH_BACKENDS],
     executionHandler: fetchUsers,
   },

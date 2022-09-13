@@ -23,6 +23,12 @@ export const userSpec: StepSpec<IntegrationConfig>[] = [
         _class: RelationshipClass.HAS,
         targetType: 'hashicorp_vault_user',
       },
+      {
+        _type: 'hashicorp_vault_account_has_user',
+        sourceType: 'hashicorp_vault_account',
+        _class: RelationshipClass.HAS,
+        targetType: 'hashicorp_vault_user',
+      },
     ],
     dependsOn: ['fetch-auth-backends'],
     implemented: true,

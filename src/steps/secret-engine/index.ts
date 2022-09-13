@@ -45,16 +45,8 @@ export const secretEnginesSteps: IntegrationStep<IntegrationConfig>[] = [
   {
     id: Steps.SECRET_ENGINES,
     name: 'Fetch Secret Engines',
-    entities: [
-      Entities.KV_1_ENGINE,
-      Entities.KV_2_ENGINE,
-      Entities.CUBBYHOLE_ENGINE,
-    ],
-    relationships: [
-      Relationships.ACCOUNT_HAS_CUBBYHOLE_ENGINE,
-      Relationships.ACCOUNT_HAS_KV_1_ENGINE,
-      Relationships.ACCOUNT_HAS_KV_2_ENGINE,
-    ],
+    entities: [Entities.SECRET_ENGINE],
+    relationships: [Relationships.ACCOUNT_HAS_SECRET_ENGINE],
     dependsOn: [Steps.ACCOUNT],
     executionHandler: fetchSecretEngines,
   },

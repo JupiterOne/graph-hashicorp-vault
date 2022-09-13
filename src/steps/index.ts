@@ -1,8 +1,6 @@
 import { secretEnginesSteps } from './secret-engine';
 import { accountSteps } from './account';
-import { cubbyholeSteps } from './cubbyhole';
-import { kv1Steps } from './kv1';
-import { kv2Steps } from './kv2';
+import { secretSteps } from './secrets';
 import { userSteps } from './user';
 import { authMethodsSteps } from './auth-backend';
 
@@ -11,9 +9,7 @@ const integrationSteps = [
   ...userSteps,
   ...secretEnginesSteps,
   ...authMethodsSteps,
-  ...kv1Steps,
-  ...kv2Steps,
-  ...cubbyholeSteps,
+  ...secretSteps,
 ];
 
 export { integrationSteps };
