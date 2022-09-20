@@ -12,7 +12,7 @@ export const accountSpec: StepSpec<IntegrationConfig>[] = [
     entities: [
       {
         resourceName: 'Account',
-        _type: 'acme_account',
+        _type: 'hashicorp_vault_account',
         _class: ['Account'],
       },
     ],

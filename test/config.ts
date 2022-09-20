@@ -10,12 +10,15 @@ if (process.env.LOAD_ENV) {
     path: path.join(__dirname, '../.env'),
   });
 }
-const DEFAULT_CLIENT_ID = 'dummy-acme-client-id';
-const DEFAULT_CLIENT_SECRET = 'dummy-acme-client-secret';
+
+const DEFAULT_TOKEN = 'abcd';
+const DEFAULT_HOSTNAME =
+  'https://vault-cluster-public-vault-edc6aa8d.0ce171e9.z1.hashicorp.cloud:8200/';
 
 export const integrationConfig: IntegrationConfig = {
-  clientId: process.env.CLIENT_ID || DEFAULT_CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET || DEFAULT_CLIENT_SECRET,
+  hostname: process.env.HOSTNAME || DEFAULT_HOSTNAME,
+  token: process.env.TOKEN || DEFAULT_TOKEN,
+  namespace: process.env.NAMESPACE || '',
 };
 
 export function buildStepTestConfigForStep(stepId: string): StepTestConfig {

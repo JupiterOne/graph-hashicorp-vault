@@ -1,25 +1,108 @@
-// Providers often supply types with their API libraries.
+export type HashiCorpVaultAccount = {
+  request_id: string;
+  lease_id: string;
+  renewable: boolean;
+  lease_duration: number;
+  data: {
+    accessor: string;
+    creation_time: number;
+    creation_ttl: number;
+    display_name: string;
+    entity_id: string;
+    expire_time: string;
+    explicit_max_ttl: number;
+    id: string;
+    issue_time: string;
+    meta?: { username: string };
+    num_uses: number;
+    orphan: boolean;
+    path: string;
+    policies: string[];
+    renewable: boolean;
+    ttl: number;
+    type: string;
+  };
+};
 
-export interface AcmeUser {
-  id: string;
-  name: string;
-}
+export type HashiCorpVaultUser = {
+  request_id: string;
+  lease_id: string;
+  renewable: boolean;
+  lease_duration: number;
+  data: {
+    policies: string[];
+    token_bound_cidrs: string[];
+    token_explicit_max_ttl: number;
+    token_max_ttl: number;
+    token_no_default_policy: boolean;
+    token_num_uses: number;
+    token_period: number;
+    token_policies: string[];
+    token_ttl: number;
+    token_type: string;
+  };
+};
 
-export interface AcmeGroup {
-  id: string;
-  name: string;
-  users?: Pick<AcmeUser, 'id'>[];
-}
+export type HashiCorpVaultEngineResponse = {
+  request_id: string;
+  lease_id: string;
+  renewable: boolean;
+  lease_duration: number;
+  data: {
+    auth: {
+      [key: string]: HashiCorpVaultAuth;
+    };
+    secret: {
+      [key: string]: HashiCorpVaultEngine;
+    };
+  };
+};
 
-// Those can be useful to a degree, but often they're just full of optional
-// values. Understanding the response data may be more reliably accomplished by
-// reviewing the API response recordings produced by testing the wrapper client
-// (./client.ts). However, when there are no types provided, it is necessary to define
-// opaque types for each resource, to communicate the records that are expected
-// to come from an endpoint and are provided to iterating functions.
+export type HashiCorpVaultAuth = {
+  name?: string;
+  accessor: string;
+  config: {
+    default_lease_ttl: number;
+    force_no_cache: boolean;
+    max_lease_ttl: number;
+    token_type: string;
+  };
+  description: string;
+  external_entropy_access: boolean;
+  local: boolean;
+  seal_wrap: boolean;
+  options?: any;
+  type: string;
+  uuid: string;
+};
 
-/*
-import { Opaque } from 'type-fest';
-export type AcmeUser = Opaque<any, 'AcmeUser'>;
-export type AcmeGroup = Opaque<any, 'AcmeGroup'>;
-*/
+export type HashiCorpVaultEngine = {
+  name?: string;
+  accessor: string;
+  config: {
+    default_lease_ttl: number;
+    force_no_cache: boolean;
+    max_lease_ttl: number;
+  };
+  description: string;
+  external_entropy_access: boolean;
+  options?: {
+    version: string;
+  };
+  local: boolean;
+  seal_wrap: boolean;
+  type: string;
+  uuid: string;
+};
+
+export type HashiCorpVaultPaths = {
+  request_id: string;
+  lease_id: string;
+  renewable: boolean;
+  lease_duration: number;
+  data: { keys: string[] };
+};
+
+export type HashiCorpVaultSecret = {
+  [key: string]: string;
+};

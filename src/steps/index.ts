@@ -1,6 +1,15 @@
+import { secretEnginesSteps } from './secret-engine';
 import { accountSteps } from './account';
-import { accessSteps } from './access';
+import { secretSteps } from './secrets';
+import { userSteps } from './user';
+import { authMethodsSteps } from './auth-backend';
 
-const integrationSteps = [...accountSteps, ...accessSteps];
+const integrationSteps = [
+  ...accountSteps,
+  ...userSteps,
+  ...secretEnginesSteps,
+  ...authMethodsSteps,
+  ...secretSteps,
+];
 
 export { integrationSteps };

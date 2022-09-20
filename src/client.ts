@@ -1,56 +1,124 @@
-import http from 'http';
-
-import { IntegrationProviderAuthenticationError } from '@jupiterone/integration-sdk-core';
+import { Response } from 'node-fetch';
+import {
+  IntegrationProviderAPIError,
+  IntegrationProviderAuthenticationError,
+} from '@jupiterone/integration-sdk-core';
 
 import { IntegrationConfig } from './config';
-import { AcmeUser, AcmeGroup } from './types';
+import { retry } from '@lifeomic/attempt';
+import { fetchOrThrow } from './utils/helpers';
+import {
+  HashiCorpVaultAccount,
+  HashiCorpVaultEngineResponse,
+  HashiCorpVaultPaths,
+  HashiCorpVaultUser,
+} from './types';
 
 export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
 
-/**
- * An APIClient maintains authentication state and provides an interface to
- * third party data APIs.
- *
- * It is recommended that integrations wrap provider data APIs to provide a
- * place to handle error responses and implement common patterns for iterating
- * resources.
- */
 export class APIClient {
   constructor(readonly config: IntegrationConfig) {}
+  private baseUri = this.config.hostname;
+  private withBaseUri = (path: string) => `${this.baseUri}v1/${path}`;
+  private namespace = this.config.namespace;
 
-  public async verifyAuthentication(): Promise<void> {
-    // TODO make the most light-weight request possible to validate
-    // authentication works with the provided credentials, throw an err if
-    // authentication fails
-    const request = new Promise<void>((resolve, reject) => {
-      http.get(
-        {
-          hostname: 'localhost',
-          port: 443,
-          path: '/api/v1/some/endpoint?limit=1',
-          agent: false,
-          timeout: 10,
-        },
-        (res) => {
-          if (res.statusCode !== 200) {
-            reject(new Error('Provider authentication failed'));
-          } else {
-            resolve();
-          }
-        },
-      );
-    });
+  private async request(
+    uri: string,
+    method: 'GET' | 'HEAD' = 'GET',
+  ): Promise<Response> {
+    const token = this.config.token;
 
     try {
-      await request;
+      const options = {
+        method,
+        headers: {
+          'X-Vault-Token': token,
+          ...(this.namespace && { 'x-vault-namespace': this.namespace }),
+        },
+      };
+
+      // Handle rate-limiting
+      const response = await retry(
+        async () => {
+          return fetchOrThrow(uri, options);
+        },
+        {
+          delay: 12000,
+          factor: 1.5,
+          maxAttempts: 5,
+          handleError: (err, context) => {
+            if (
+              err.statusCode !== 429 ||
+              ([500, 502, 503].includes(err.statusCode) &&
+                context.attemptNum > 1)
+            )
+              context.abort();
+          },
+        },
+      );
+
+      return response.json();
     } catch (err) {
-      throw new IntegrationProviderAuthenticationError({
-        cause: err,
-        endpoint: 'https://localhost/api/v1/some/endpoint?limit=1',
+      throw new IntegrationProviderAPIError({
+        endpoint: uri,
         status: err.status,
         statusText: err.statusText,
       });
     }
+  }
+
+  public async verifyAuthentication(): Promise<void> {
+    const uri = this.withBaseUri('auth/token/lookup-self');
+    try {
+      await this.request(uri);
+    } catch (err) {
+      throw new IntegrationProviderAuthenticationError({
+        cause: err,
+        endpoint: uri,
+        status: err.status,
+        statusText: err.statusText,
+      });
+    }
+  }
+
+  public async getMounts(): Promise<HashiCorpVaultEngineResponse> {
+    const uri = this.withBaseUri('sys/internal/ui/mounts');
+    return this.request(uri);
+  }
+
+  public async getKv1Secrets(
+    kvEngineName: string,
+  ): Promise<HashiCorpVaultPaths> {
+    const uri = this.withBaseUri(`${kvEngineName.slice(0, -1)}?list=true`);
+    return this.request(uri);
+  }
+
+  public async getKv2Secrets(
+    kvEngineName: string,
+  ): Promise<HashiCorpVaultPaths> {
+    const uri = this.withBaseUri(
+      `${kvEngineName.slice(0, -1)}/metadata?list=true`,
+    );
+    return this.request(uri);
+  }
+
+  public async getCubbyholeSecrets(
+    cubbyholeEngineName: string,
+  ): Promise<HashiCorpVaultPaths> {
+    const uri = this.withBaseUri(
+      `${cubbyholeEngineName.slice(0, -1)}?list=true`,
+    );
+    return this.request(uri);
+  }
+
+  /**
+   * Gets the token details in the provider.
+   *
+   * @param iteratee receives each resource to produce entities/relationships
+   */
+  public async getAccount(): Promise<HashiCorpVaultAccount> {
+    const uri = this.withBaseUri('auth/token/lookup-self');
+    return this.request(uri, 'GET');
   }
 
   /**
@@ -59,63 +127,30 @@ export class APIClient {
    * @param iteratee receives each resource to produce entities/relationships
    */
   public async iterateUsers(
-    iteratee: ResourceIteratee<AcmeUser>,
+    path: string,
+    iteratee: ResourceIteratee<any>,
   ): Promise<void> {
-    // TODO paginate an endpoint, invoke the iteratee with each record in the
-    // page
-    //
-    // The provider API will hopefully support pagination. Functions like this
-    // should maintain pagination state, and for each page, for each record in
-    // the page, invoke the `ResourceIteratee`. This will encourage a pattern
-    // where each resource is processed and dropped from memory.
+    const uri = this.withBaseUri(`auth/${path.slice(0, -1)}/users?list=true`);
 
-    const users: AcmeUser[] = [
-      {
-        id: 'acme-user-1',
-        name: 'User One',
-      },
-      {
-        id: 'acme-user-2',
-        name: 'User Two',
-      },
-    ];
-
-    for (const user of users) {
-      await iteratee(user);
+    const users = await this.request(uri);
+    if (users && users.data && users.data.keys) {
+      for (const user of users.data.keys) {
+        await iteratee(user);
+      }
     }
   }
 
   /**
-   * Iterates each group resource in the provider.
+   * Iterates each user resource in the provider.
    *
    * @param iteratee receives each resource to produce entities/relationships
    */
-  public async iterateGroups(
-    iteratee: ResourceIteratee<AcmeGroup>,
-  ): Promise<void> {
-    // TODO paginate an endpoint, invoke the iteratee with each record in the
-    // page
-    //
-    // The provider API will hopefully support pagination. Functions like this
-    // should maintain pagination state, and for each page, for each record in
-    // the page, invoke the `ResourceIteratee`. This will encourage a pattern
-    // where each resource is processed and dropped from memory.
-
-    const groups: AcmeGroup[] = [
-      {
-        id: 'acme-group-1',
-        name: 'Group One',
-        users: [
-          {
-            id: 'acme-user-1',
-          },
-        ],
-      },
-    ];
-
-    for (const group of groups) {
-      await iteratee(group);
-    }
+  public async getUser(
+    path: string,
+    userId: string,
+  ): Promise<HashiCorpVaultUser> {
+    const uri = this.withBaseUri(`auth/${path.slice(0, -1)}/users/${userId}`);
+    return this.request(uri);
   }
 }
 
