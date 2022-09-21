@@ -8,6 +8,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## 1.0.1 - 2022-09-21
+
 ### Fixed
 
 - Added better handling for environment field `HOSTNAME`. When trailing slash
