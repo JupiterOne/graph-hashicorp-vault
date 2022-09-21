@@ -18,9 +18,15 @@ export type ResourceIteratee<T> = (each: T) => Promise<void> | void;
 
 export class APIClient {
   constructor(readonly config: IntegrationConfig) {}
-  private baseUri = this.config.hostname;
-  private withBaseUri = (path: string) => `${this.baseUri}v1/${path}`;
   private namespace = this.config.namespace;
+  private baseUri = this.config.hostname;
+  private withBaseUri = (path: string) => {
+    if (this.baseUri.slice(-1) !== '/') {
+      return `${this.baseUri}/v1/${path}`;
+    } else {
+      return `${this.baseUri}v1/${path}`;
+    }
+  };
 
   private async request(
     uri: string,
