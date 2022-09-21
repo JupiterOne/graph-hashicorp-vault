@@ -8,6 +8,12 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Fixed
+
+- Added better handling for environment field `HOSTNAME`. When trailing slash
+  ('/') isn't present it'll automatically be inserted to prevent integration
+  from not working properly.
+
 ## 1.0.0 - 2022-09-20
 
 ### Added
