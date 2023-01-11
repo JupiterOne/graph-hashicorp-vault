@@ -3,7 +3,7 @@ sourceId: managed:hashicorp-vault
 integrationDefinitionId: '${integration_definition_id}'
 questions: 
 - id: integration-question-hashicorp-vault-engine-without-secrets
-  title: Which Hashicorp Vault engines do not use vault secrets?
+  title: Which Hashicorp Vault engines do not have any secrets?
   description:
     Returns a list of Hashicorp Vault engines that do not use a key vault secret.
   queries:
