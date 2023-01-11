@@ -5,7 +5,7 @@ questions:
 - id: integration-question-hashicorp-vault-engine-without-secrets
   title: Which Hashicorp Vault engines do not have any secrets?
   description:
-    Returns a list of Hashicorp Vault engines that do not use a key vault secret.
+    Returns a list of Hashicorp Vault engines that do have any secrets.
   queries:
     - name: bad
       query: |
