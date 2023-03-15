@@ -1,4 +1,4 @@
-# HashiCorp Vault Integration with JupiterOne
+# HashiCorp Vault
 
 ## HashiCorp Vault + JupiterOne Integration Benefits
 
@@ -32,12 +32,12 @@ If you need help with this integration, please contact
 
 ## Provider account setup
 
-This integration can be used for both standalone (on-premise) Hashicorp Vault
-and Hashicorp Vault Cloud offerings.
+This integration can be used for both standalone, on-premise Hashicorp Vault and
+Hashicorp Vault Cloud offerings.
 
 ### In HashiCorp Vault
 
-1. Provide the token to be used for the integration. If you're using Vault
+1. Provide the token to be used for the integration. If you are using Vault
    Enterprise, take note of the provided API
    [namespace](https://www.vaultproject.io/docs/enterprise/namespaces). The
    namespace is optional ENV field and is necessary for using Cloud offering.
@@ -107,7 +107,7 @@ path "auth/my-userpass-2/*" {
 
 ### In JupiterOne
 
-1. From the configuration **Gear Icon**, select **Integrations**.
+1. From the top navigation of the J1 Search homepage, select **Integrations**.
 2. Scroll to the **HashiCorp Vault** integration tile and click it.
 3. Click the **Add Configuration** button and configure the following settings:
 
@@ -124,7 +124,7 @@ path "auth/my-userpass-2/*" {
 
 # How to Uninstall
 
-1. From the configuration **Gear Icon**, select **Integrations**.
+1. From the top navigation of the J1 Search homepage, select **Integrations**.
 2. Scroll to the **HashiCorp Vault** integration tile and click it.
 3. Identify and click the **integration to delete**.
 4. Click the **trash can** icon.
