@@ -32,12 +32,12 @@ If you need help with this integration, please contact
 
 ## Provider account setup
 
-This integration can be used for both standalone (on-premise) Hashicorp Vault
-and Hashicorp Vault Cloud offerings.
+This integration can be used for both standalone, on-premise Hashicorp Vault and
+Hashicorp Vault Cloud offerings.
 
 ### In HashiCorp Vault
 
-1. Provide the token to be used for the integration. If you're using Vault
+1. Provide the token to be used for the integration. If you are using Vault
    Enterprise, take note of the provided API
    [namespace](https://www.vaultproject.io/docs/enterprise/namespaces). The
    namespace is optional ENV field and is necessary for using Cloud offering.
