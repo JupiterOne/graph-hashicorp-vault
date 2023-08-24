@@ -27,6 +27,7 @@
     "test:env": "LOAD_ENV=1 yarn test",
     "test:ci": "yarn format:check && yarn lint && yarn type-check && yarn test",
     "build": "tsc -p tsconfig.dist.json --declaration && cp README.md dist/README.md && cp -r jupiterone/ dist/jupiterone/",
+    "postversion": "cp package.json ./dist/package.json",
     "prepush": "yarn format:check && yarn lint && yarn type-check && jest --changedSince main"
   },
   "peerDependencies": {
@@ -40,5 +41,21 @@
   "dependencies": {
     "@lifeomic/attempt": "^3.0.3",
     "node-fetch": "2"
+  },
+  "auto": {
+    "plugins": [
+      [
+        "npm",
+        {
+          "setRcToken": false,
+          "publishFolder": "./dist"
+        }
+      ],
+      "released"
+    ],
+    "onlyPublishWithReleaseLabel": true,
+    "shipit": {
+      "prerelease": false
+    }
   }
 }
