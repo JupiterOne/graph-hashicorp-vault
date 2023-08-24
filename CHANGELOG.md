@@ -1,3 +1,15 @@
+# v2.0.1 (Thu Aug 24 2023)
+
+#### 🐛 Bug Fix
+
+- Update package.json for Auto [#17](https://github.com/JupiterOne/graph-hashicorp-vault/pull/17) ([@zemberdotnet](https://github.com/zemberdotnet))
+
+#### Authors: 1
+
+- Matthew Zember ([@zemberdotnet](https://github.com/zemberdotnet))
+
+---
+
 # v2.0.0 (Wed Aug 23 2023)
 
 #### 💥 Breaking Change
