@@ -2,11 +2,15 @@
 
 #### 💥 Breaking Change
 
-- containerize integration [#15](https://github.com/JupiterOne/graph-hashicorp-vault/pull/15) ([@zemberdotnet](https://github.com/zemberdotnet))
+- containerize integration
+  [#15](https://github.com/JupiterOne/graph-hashicorp-vault/pull/15)
+  ([@zemberdotnet](https://github.com/zemberdotnet))
 
 #### 🐛 Bug Fix
 
-- add npmrc to gitignore [#16](https://github.com/JupiterOne/graph-hashicorp-vault/pull/16) ([@zemberdotnet](https://github.com/zemberdotnet))
+- add npmrc to gitignore
+  [#16](https://github.com/JupiterOne/graph-hashicorp-vault/pull/16)
+  ([@zemberdotnet](https://github.com/zemberdotnet))
 
 #### Authors: 1
 
