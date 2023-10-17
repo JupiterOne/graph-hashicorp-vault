@@ -2,6 +2,10 @@
   "name": "@jupiterone/graph-hashicorp-vault",
   "version": "2.0.1",
   "description": "A JupiterOne Integration for ingesting data of Hashicorp Vault",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JupiterOne/graph-hashicorp-vault"
+  },
   "license": "MPL-2.0",
   "main": "src/index.js",
   "types": "src/index.d.ts",
