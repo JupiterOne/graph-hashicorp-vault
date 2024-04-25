@@ -1,3 +1,20 @@
+# v2.0.1 (Thu Apr 25 2024)
+
+#### 🐛 Bug Fix
+
+- update dockerfile [#18](https://github.com/JupiterOne/graph-hashicorp-vault/pull/18) ([@zemberdotnet](https://github.com/zemberdotnet))
+
+#### ⚠️ Pushed to `main`
+
+- Apply remove-codeql with multi-gitter [ci skip] ([@electricgull](https://github.com/electricgull))
+
+#### Authors: 2
+
+- Cameron Griffin ([@electricgull](https://github.com/electricgull))
+- Matthew Zember ([@zemberdotnet](https://github.com/zemberdotnet))
+
+---
+
 # v2.0.1 (Thu Aug 24 2023)
 
 #### 🐛 Bug Fix
