@@ -1,6 +1,6 @@
 {
   "name": "@jupiterone/graph-hashicorp-vault",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A JupiterOne Integration for ingesting data of Hashicorp Vault",
   "repository": {
     "type": "git",
