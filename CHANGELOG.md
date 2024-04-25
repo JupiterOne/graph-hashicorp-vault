@@ -2,7 +2,9 @@
 
 #### 🐛 Bug Fix
 
-- Update package.json for Auto [#17](https://github.com/JupiterOne/graph-hashicorp-vault/pull/17) ([@zemberdotnet](https://github.com/zemberdotnet))
+- Update package.json for Auto
+  [#17](https://github.com/JupiterOne/graph-hashicorp-vault/pull/17)
+  ([@zemberdotnet](https://github.com/zemberdotnet))
 
 #### Authors: 1
 
